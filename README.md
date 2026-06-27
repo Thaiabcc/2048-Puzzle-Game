@@ -46,7 +46,7 @@ An optimized, production-ready 2048 puzzle game built with Unity and C#. This pr
 ---
 
 ## 📖 How to Run
-1. Clone this repository: `git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git`
+1. Clone this repository: `https://github.com/Thaiabcc/2048-Puzzle-Game`
 2. Open the project directory inside **Unity Hub** (Version 2022.3.x recommended).
 3. Open the main scene located in `Assets/Scenes/`.
 4. Press **Play** inside the Unity Editor. Use `Arrow Keys` to control.
