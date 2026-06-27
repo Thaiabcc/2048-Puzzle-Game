@@ -31,7 +31,7 @@ During development, I realized that continuously allocating dynamic collections 
 ## 🎮 Completed Features
 *   **Core Gameplay:** Smooth shifting, compressing, and merging mechanics controlled via Arrow Keys.
 *   **Scoring System:** Increments score dynamically upon successful tile merges and persistently saves the high score (`Best Score`) locally using `PlayerPrefs`.
-*   **Complete Game Loop:** Structured flow featuring a Start Menu, a Settings Panel overlay, and a Game Over screen with a fully functional "Try Again" restart mechanism.
+*   **Complete Game Loop:** Structured flow featuring a Start Menu, a Game Over screen with a fully functional "Try Again" restart mechanism.
 
 ---
 
