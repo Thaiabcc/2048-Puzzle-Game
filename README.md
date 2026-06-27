@@ -3,7 +3,7 @@
 A lightweight 2048 puzzle game built during my journey of learning Unity and C#. The primary goal of this project is to implement a complete Game Loop and apply basic memory optimization techniques to prevent micro-stutters during gameplay.
 
 ## 🚀 Playable Demo
-*   **WebGL Playable Link:** [Insert your itch.io link here]
+*   **WebGL Playable Link:** [https://thaiabcc.itch.io/2048-puzzle-game]
 
 ---
 
