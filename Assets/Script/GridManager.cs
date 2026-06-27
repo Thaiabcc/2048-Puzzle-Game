@@ -8,7 +8,8 @@ public class GridManager : MonoBehaviour
 {
     [Header("UI Panels")]
     [SerializeField] private GameObject startMenuPanel; 
-    [SerializeField] private GameObject gameOverPanel; 
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject gameWinPanel;
     [SerializeField] private GameObject settingsPanel;   
 
     [Header("Score & Text References")]
@@ -24,6 +25,7 @@ public class GridManager : MonoBehaviour
     private bool isMoving = false;
     private int currentScore = 0;
     private int bestScore = 0;
+    private bool hasWon = false;
 
     private WaitForSeconds waitMove;        
     private readonly List<int> tilesCache = new(4);
@@ -42,13 +44,15 @@ public class GridManager : MonoBehaviour
         if (startMenuPanel != null) startMenuPanel.SetActive(true);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (gameWinPanel != null) gameWinPanel.SetActive(false);
     }
 
     private void Update()
     {
         if (isMoving) return;
         if ((startMenuPanel != null && startMenuPanel.activeSelf) || 
-            (gameOverPanel != null && gameOverPanel.activeSelf) || 
+            (gameOverPanel != null && gameOverPanel.activeSelf) ||
+            (gameWinPanel != null && gameWinPanel.activeSelf) ||
             (settingsPanel != null && settingsPanel.activeSelf)) return;
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))  StartCoroutine(MoveSequence(0));
@@ -66,10 +70,12 @@ public class GridManager : MonoBehaviour
     public void RestartGame()
     {
         currentScore = 0;
+        hasWon = false;
         UpdateScoreUI();
         
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(false);
+        if(gameWinPanel != null) gameWinPanel.SetActive(false);
 
         System.Array.Clear(grid, 0, grid.Length);
         
@@ -144,8 +150,15 @@ public class GridManager : MonoBehaviour
             yield return waitMove;
             SpawnTile();
             UpdateUI();
-
-            if (CheckGameOver()) TriggerGameOver();
+            
+            if (!hasWon && CheckWinCondition())
+            {
+                TriggerGameWin();
+            }
+            else if (CheckGameOver())
+            {
+                TriggerGameOver();
+            }
         }
 
         isMoving = false;
@@ -255,5 +268,30 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 allTiles[i * 4 + j].SetValue(grid[i, j]);
+    }
+    public void KeepPlaying()
+    {
+        if (gameWinPanel != null) gameWinPanel.SetActive(false);
+    }
+
+    private bool CheckWinCondition()
+    {
+        for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (grid[i, j] == 2048) return true;
+        return false;
+    }
+
+    private void TriggerGameWin()
+    {
+        hasWon = true;
+        if (gameWinPanel == null) return;
+        gameWinPanel.SetActive(true);
+        CanvasGroup cg = gameWinPanel.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.alpha = 0f;
+            cg.DOFade(1f, 0.5f).SetUpdate(true);
+        }
     }
 }
