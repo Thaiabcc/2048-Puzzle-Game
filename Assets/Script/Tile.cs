@@ -47,13 +47,17 @@ public class Tile : MonoBehaviour
         bool wasEmpty = currentValue == 0;
         currentValue = value;
 
-        numberText.text = value == 0 ? "" : value.ToString();
+        if (numberText != null)
+        {
+            numberText.text = value == 0 ? "" : value.ToString();
+            numberText.color = value >= 8 ? Color.white : new Color(0.3f, 0.3f, 0.3f);
+        }
 
-        int colorIndex = value == 0 ? 0 : Mathf.Min((int)Mathf.Log(value, 2), tileColors.Length - 1);
-        backgroundImage.color = tileColors[colorIndex];
-
-        numberText.color = value >= 8 ? Color.white : new Color(0.3f, 0.3f, 0.3f);
-
+        if (backgroundImage != null && tileColors != null && tileColors.Length > 0)
+        {
+            int colorIndex = value == 0 ? 0 : Mathf.Min((int)Mathf.Log(value, 2), tileColors.Length - 1);
+            backgroundImage.color = tileColors[colorIndex];
+        }
         if (isNewTile && value != 0)
             PlaySpawnAnimation();
         else if (isMerge)
@@ -65,13 +69,16 @@ public class Tile : MonoBehaviour
     private void PlaySpawnAnimation()
     {
         KillTween();
-        transform.localScale = Vector3.zero;
+        
+        transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+        
         scaleTween = transform.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
     }
 
     private void PlayMergeAnimation()
     {
         KillTween();
+        transform.localScale = Vector3.one;
         scaleTween = transform.DOScale(1.25f, 0.1f)
             .OnComplete(() => transform.DOScale(1f, 0.15f));
     }
